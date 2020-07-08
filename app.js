@@ -1,6 +1,13 @@
 class App extends React.Component {
   state = {
+    show: false,
+    notes: []
+  }
 
+  toggleShow = () => {
+    this.setState({
+      show:!this.state.show
+    })
   }
 
 // INDEX GET ROUTE ==========
@@ -17,13 +24,19 @@ class App extends React.Component {
 
 // CREATE ROUTE =============
   createNote = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     axios.post(
       '/notes',
       {
         date:this.state.newDate,
         title:this.state.newTitle,
         body:this.state.newBody
+      }
+    ).then(
+      (response) => {
+        this.setState({
+          notes:response.data
+        })
       }
     )
   }
@@ -46,6 +59,76 @@ class App extends React.Component {
     })
   }
 // ==========================
+
+// DELETE ROUTE =============
+  deleteNote = (event) => {
+    // event.preventDefault();
+    axios.delete('/notes/' + event.target.value).then(
+      (response) => {
+        console.log(response.data);
+        this.setState({
+          notes:response.data
+        })
+      }
+    )
+  }
+// ==========================
+
+  render = () => {
+    const { note } = this.props
+    return (
+      <div className="container">
+        <div className="header">
+          <h1>Notes</h1>
+          <button onClick={this.toggleShow}>Add</button>
+        </div>
+        <div className="main">
+          <div className="nav">
+            {(this.state.show) ?
+              <form onSubmit={this.createNote}>
+                <input onChange={this.newTitle} type="text" placeholder="Title"/>
+                <input onChange={this.newDate} type="date"/>
+                <textarea onChange={this.newBody}></textarea>
+                <input className="button" type="submit"/>
+              </form>
+            : null}
+          </div>
+          <div className="notes">
+              {this.state.notes.map((note,index) => {
+                return(
+                  <div key={index}>
+                    <div className="title">
+                      <h3>{note.title}</h3>
+                      <h3>{note.date}</h3>
+                    </div>
+                    <div className="body">
+                      <p>{note.body}</p>
+                    </div>
+                    <button value={note.id} onClick={this.deleteNote}>Delete</button>
+                    <Update index={note}></Update>
+                  </div>
+                )
+              })}
+          </div>
+        </div>
+        <div className="footer">
+          <h3>Copywrite...</h3>
+        </div>
+      </div>
+    )
+  }
+}
+
+class Update extends React.Component {
+  state = {
+    show:false
+  }
+
+  toggleShow = () => {
+    this.setState({
+      show:!this.state.show
+    })
+  }
 
 // UPDATE ROUTE =============
   updateNote = (event) => {
@@ -88,49 +171,19 @@ class App extends React.Component {
   }
 // ==========================
 
-// DELETE ROUTE =============
-  deleteNote = (event) => {
-    event.preventDefault();
-    axios.delete('/notes/' + event.target.value).then(
-      (response) => {
-        console.log(response.data);
-        this.setState({
-          notes:response.data
-        })
-      }
-    )
-  }
-// ==========================
-
   render = () => {
-    return (
-      <div className="container">
-        <div className="header">
-          <h1>Notes</h1>
-          <button onClick={this.toggleShow}>Add</button>
-        </div>
-        <div className="main">
-          <div className="nav">
-            <form onSubmit={this.createNote}>
-              <input onChange={this.newTitle} type="text" placeholder="Title"/>
-              <input onChange={this.newDate} type="date"/>
-              <textarea onChange={this.newBody}></textarea>
-              <input className="button" type="submit"/>
-            </form>
-          </div>
-          <div className="notes">
-            <div className="title">
-              <h3>Note Title</h3>
-              <button onClick={this.updateNote}>Edit</button>
-              <button onClick={this.deleteNote}>Delete</button>
-            </div>
-            <div className="body">
-            </div>
-          </div>
-        </div>
-        <div className="footer">
-          <h3>Copywrite...</h3>
-        </div>
+    const { index } = this.props
+    return(
+      <div>
+        <button onClick={this.toggleShow}>Edit</button>
+        {(this.state.show) ?
+          <form id={index.id} onSubmit={this.updateNote}>
+            <input onChange={this.updateTitle} type="text" value={index.title}/>
+            <input onChange={this.updateDate} type="date" value={index.date}/>
+            <textarea onChange={this.updateBody} defaultValue={index.body}></textarea>
+            <input className="button" type="submit"/>
+          </form>
+        : null}
       </div>
     )
   }
