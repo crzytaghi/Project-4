@@ -1,6 +1,6 @@
-* {
+/* * {
   border: 1px solid gold;
-}
+} */
 
 .header {
   display: flex;
@@ -52,7 +52,7 @@
   justify-content: space-around;
 }
 
-.title button {
+.notes button {
   margin: 10px 8px;
   padding-left: 50px;
   padding-right: 50px;
