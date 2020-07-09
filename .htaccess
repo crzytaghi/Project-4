@@ -1,0 +1,13 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteRule ^notes$ controllers/notes.php?action=index
+
+RewriteCond %{REQUEST_METHOD} ^POST$
+RewriteRule ^notes$ controllers/notes.php?action=create
+
+RewriteCond %{REQUEST_METHOD} ^PUT$
+RewriteRule ^notes/([0-9]+)$ controllers/notes.php?action=update&id=$1
+
+RewriteCond %{REQUEST_METHOD} ^DELETE$
+RewriteRule ^notes/([0-9]+)$ controllers/notes.php?action=delete&id=$1
