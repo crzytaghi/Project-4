@@ -1,6 +1,6 @@
 class App extends React.Component {
   state = {
-    show: true,
+    show: false,
     notes: []
   }
 
@@ -91,12 +91,20 @@ class App extends React.Component {
                 <textarea onChange={this.newBody}></textarea><br/>
                 <input className="button" type="submit"/>
               </form>
-            : null}
+            :
+              <div className="about">
+                <h2>Creators</h2>
+                <img src="https://media-exp1.licdn.com/dms/image/C5603AQHnPTWhj9TTzg/profile-displayphoto-shrink_200_200/0?e=1599696000&v=beta&t=HTnT3h9cwd2JMPYUgdWcDl_-lmHC-t-Z_MN_RyAxmoo" alt="Xavier Johnson"/>
+                <h3><a target="_blank" href="https://www.linkedin.com/in/xavier-johnson-a877031b1/">Xavier Johnson</a></h3><br/>
+                <img src="https://media-exp1.licdn.com/dms/image/C5603AQHfLgRalJ-1Yg/profile-displayphoto-shrink_200_200/0?e=1599696000&v=beta&t=_m_NmBhvRTwlIRi2wBXcHD7PAklgPwtNqG04p7V4M-Y" alt="Andrew Taghi"/>
+                <h3><a target="_blank" href="https://www.linkedin.com/in/andrew-taghi-59689b41/">Andrew Taghi</a></h3>
+              </div>
+              }
           </div>
           <div className="notes">
-              {this.state.notes.map((note,index) => {
+              {this.state.notes.map((note,i) => {
                 return(
-                  <section key={index}>
+                  <section key={i}>
                     <div className="title">
                       <h3>{note.title}</h3>
                       <h3>{note.date}</h3>
