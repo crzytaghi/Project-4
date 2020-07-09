@@ -1,6 +1,6 @@
 class App extends React.Component {
   state = {
-    show: false,
+    show: true,
     notes: []
   }
 
@@ -86,9 +86,9 @@ class App extends React.Component {
           <div className="nav">
             {(this.state.show) ?
               <form onSubmit={this.createNote}>
-                <input onChange={this.newTitle} type="text" placeholder="Title"/>
-                <input onChange={this.newDate} type="date"/>
-                <textarea onChange={this.newBody}></textarea>
+                <input onChange={this.newTitle} type="text" placeholder="Title"/><br/>
+                <input onChange={this.newDate} type="date"/><br/>
+                <textarea onChange={this.newBody}></textarea><br/>
                 <input className="button" type="submit"/>
               </form>
             : null}
@@ -96,7 +96,7 @@ class App extends React.Component {
           <div className="notes">
               {this.state.notes.map((note,index) => {
                 return(
-                  <div key={index}>
+                  <section key={index}>
                     <div className="title">
                       <h3>{note.title}</h3>
                       <h3>{note.date}</h3>
@@ -106,7 +106,7 @@ class App extends React.Component {
                     </div>
                     <button value={note.id} onClick={this.deleteNote}>Delete</button>
                     <Update index={note}></Update>
-                  </div>
+                  </section>
                 )
               })}
           </div>
